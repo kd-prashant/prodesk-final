@@ -58,7 +58,7 @@ function login() {
   const username = document.getElementById("username").value;
   const password = document.getElementById("password").value;
 
-  fetch("http://localhost:5000/admin-data", {
+  fetch("/admin-data", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ username, password })
@@ -92,7 +92,7 @@ function login() {
           <td>${c.phone}</td>
         <td>
         ${c.resume 
-            ? `<a href="http://localhost:5000/uploads/${c.resume}" target="_blank">View Resume</a>` 
+            ? `<a href="/uploads/${c.resume}" target="_blank">View Resume</a>` 
             : "-"}
         </td>
 
