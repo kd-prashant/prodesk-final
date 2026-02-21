@@ -1,0 +1,12 @@
+HTTrack3.49-2+htsswf+htsjava launched on Sat, 21 Feb 2026 23:04:35 at https://prodesk.in/home +*.png +*.gif +*.jpg +*.jpeg +*.css +*.js -ad.doubleclick.net/* -mime:application/foobar
+(winhttrack -qwC2%Ps2u1%s%uN0%I0p3DaK0H0%kf2A25000%f#f -F "Mozilla/4.5 (compatible; HTTrack 3.0x; Windows 98)" -%F "<!-- Mirrored from %s%s by HTTrack Website Copier/3.x [XR&CO'2014], %s -->" -%l "en, *" https://prodesk.in/home -O1 "C:\Users\ASUS\Desktop\prodeskitcloned" +*.png +*.gif +*.jpg +*.jpeg +*.css +*.js -ad.doubleclick.net/* -mime:application/foobar )
+
+Information, Warnings and Errors reported for this mirror:
+note:	the hts-log.txt file, and hts-cache folder, may contain sensitive information,
+	such as username/password authentication for websites mirrored in this project
+	do not share these files/folders if you want these information to remain private
+
+23:06:05	Error: 	"Forbidden" (403) at link img1.wsimg.com/signals/js/clients/scc-c2/scc-c2.min.js (from https://prodesk.in/home)
+
+HTTrack Website Copier/3.49-2 mirror complete in 1 minutes 30 seconds : 132 links scanned, 130 files written (11881259 bytes overall) [2290437 bytes received at 25449 bytes/sec], 11828596 bytes transferred using HTTP compression in 130 files, ratio 17%, 16.5 requests per connection
+(1 errors, 0 warnings, 0 messages)

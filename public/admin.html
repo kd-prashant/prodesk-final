@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Admin Panel - Prodesk</title>
+  <meta charset="UTF-8">
+  <style>
+    body { font-family: Arial; padding: 20px; background: #f4f4f4; }
+    input { padding: 8px; margin: 5px 0; width: 250px; }
+    button { padding: 8px 15px; }
+    table { width: 100%; border-collapse: collapse; margin-top: 20px; background: white; }
+    th, td { border: 1px solid #ddd; padding: 8px; }
+    th { background: black; color: white; }
+  </style>
+</head>
+<body>
+
+<h1>Admin Login</h1>
+
+<div id="loginSection">
+  <input type="text" id="username" placeholder="Username"><br>
+  <input type="password" id="password" placeholder="Password"><br>
+  <button onclick="login()">Login</button>
+  <p id="error" style="color:red;"></p>
+</div>
+
+<div id="adminSection" style="display:none;">
+  <h2>Contact Submissions</h2>
+  <table id="contactTable">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Phone</th>
+        <th>Message</th>
+        <th>Date</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+
+  <h2>Career Applications</h2>
+  <table id="careerTable">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Phone</th>
+        <th>Resume</th>
+        <th>Date</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+</div>
+
+<script>
+function login() {
+  const username = document.getElementById("username").value;
+  const password = document.getElementById("password").value;
+
+  fetch("http://localhost:5000/admin-data", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ username, password })
+  })
+  .then(res => {
+    if (!res.ok) throw new Error("Invalid credentials");
+    return res.json();
+  })
+  .then(data => {
+    document.getElementById("loginSection").style.display = "none";
+    document.getElementById("adminSection").style.display = "block";
+
+    const contactBody = document.querySelector("#contactTable tbody");
+    data.contacts.forEach(c => {
+      contactBody.innerHTML += `
+        <tr>
+          <td>${c.name}</td>
+          <td>${c.email}</td>
+          <td>${c.phone}</td>
+          <td>${c.message}</td>
+          <td>${new Date(c.createdAt).toLocaleString()}</td>
+        </tr>`;
+    });
+
+    const careerBody = document.querySelector("#careerTable tbody");
+    data.careers.forEach(c => {
+      careerBody.innerHTML += `
+        <tr>
+          <td>${c.name}</td>
+          <td>${c.email}</td>
+          <td>${c.phone}</td>
+        <td>
+        ${c.resume 
+            ? `<a href="http://localhost:5000/uploads/${c.resume}" target="_blank">View Resume</a>` 
+            : "-"}
+        </td>
+
+        <td>${new Date(c.createdAt).toLocaleString()}</td>
+        </tr>`;
+    });
+  })
+  .catch(err => {
+    document.getElementById("error").textContent = "Invalid username or password";
+  });
+}
+</script>
+
+</body>
+</html>
