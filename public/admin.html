@@ -3,13 +3,263 @@
 <head>
   <title>Admin Panel - Prodesk</title>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
-    body { font-family: Arial; padding: 20px; background: #f4f4f4; }
-    input { padding: 8px; margin: 5px 0; width: 250px; }
-    button { padding: 8px 15px; }
-    table { width: 100%; border-collapse: collapse; margin-top: 20px; background: white; }
-    th, td { border: 1px solid #ddd; padding: 8px; }
-    th { background: black; color: white; }
+    /* ===== BASE RESET & BODY ===== */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Inter', Arial, sans-serif;
+      padding: 30px 20px;
+      background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
+      min-height: 100vh;
+      color: #e0e0e0;
+    }
+
+    /* ===== HEADINGS ===== */
+    h1 {
+      text-align: center;
+      font-size: 2rem;
+      font-weight: 700;
+      color: #ffffff;
+      margin-bottom: 30px;
+      letter-spacing: 1px;
+    }
+
+    h2 {
+      font-size: 1.35rem;
+      font-weight: 600;
+      color: #ffffff;
+      margin: 30px 0 10px;
+      padding-bottom: 8px;
+      border-bottom: 2px solid rgba(167, 139, 250, 0.4);
+    }
+
+    /* ===== LOGIN SECTION ===== */
+    #loginSection {
+      max-width: 400px;
+      margin: 40px auto;
+      background: rgba(255, 255, 255, 0.06);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 16px;
+      padding: 40px 30px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.35);
+    }
+
+    input {
+      display: block;
+      width: 100%;
+      padding: 12px 16px;
+      margin: 12px 0;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 10px;
+      color: #ffffff;
+      font-size: 0.95rem;
+      font-family: 'Inter', Arial, sans-serif;
+      transition: border-color 0.3s ease, box-shadow 0.3s ease;
+      outline: none;
+    }
+
+    input::placeholder { color: rgba(255, 255, 255, 0.45); }
+
+    input:focus {
+      border-color: #a78bfa;
+      box-shadow: 0 0 0 3px rgba(167, 139, 250, 0.25);
+    }
+
+    button {
+      display: block;
+      width: 100%;
+      padding: 12px 20px;
+      margin-top: 18px;
+      background: linear-gradient(135deg, #a78bfa, #7c3aed);
+      color: #ffffff;
+      font-size: 1rem;
+      font-weight: 600;
+      font-family: 'Inter', Arial, sans-serif;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: transform 0.2s ease, box-shadow 0.3s ease;
+      letter-spacing: 0.5px;
+    }
+
+    button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(167, 139, 250, 0.4);
+    }
+
+    button:active { transform: translateY(0); }
+
+    #error {
+      text-align: center;
+      font-size: 0.9rem;
+      margin-top: 10px;
+    }
+
+    /* ===== ADMIN DATA SECTION ===== */
+    #adminSection {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 20px 0;
+    }
+
+    /* ===== TABLES ===== */
+    .table-wrapper {
+      /* We won't add a wrapper div in HTML — we use overflow on the table's parent */
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 16px;
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 12px;
+      overflow: hidden;
+    }
+
+    thead { background: rgba(124, 58, 237, 0.6); }
+
+    th {
+      background: transparent;
+      color: #ffffff;
+      padding: 14px 12px;
+      font-weight: 600;
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      text-align: left;
+      white-space: nowrap;
+    }
+
+    td {
+      padding: 12px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+      font-size: 0.9rem;
+      color: #d1d5db;
+      word-break: break-word;
+    }
+
+    tbody tr { transition: background 0.2s ease; }
+
+    tbody tr:hover { background: rgba(167, 139, 250, 0.08); }
+
+    tbody tr:last-child td { border-bottom: none; }
+
+    td a {
+      color: #a78bfa;
+      text-decoration: none;
+      font-weight: 500;
+      transition: color 0.2s ease;
+    }
+
+    td a:hover { color: #c4b5fd; text-decoration: underline; }
+
+    /* Remove default br spacing in login */
+    #loginSection br { display: none; }
+
+    /* ===== RESPONSIVE — TABLET (≤ 768px) ===== */
+    @media (max-width: 768px) {
+      body { padding: 20px 14px; }
+
+      h1 { font-size: 1.6rem; margin-bottom: 20px; }
+      h2 { font-size: 1.15rem; }
+
+      #loginSection { padding: 30px 22px; margin: 24px auto; }
+
+      /* Horizontal scroll for wide tables */
+      #adminSection {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+      }
+
+      th, td { padding: 10px 8px; font-size: 0.82rem; }
+    }
+
+    /* ===== RESPONSIVE — PHONE (≤ 480px) ===== */
+    @media (max-width: 480px) {
+      body { padding: 14px 10px; }
+
+      h1 { font-size: 1.35rem; margin-bottom: 16px; }
+      h2 { font-size: 1.05rem; margin: 20px 0 8px; }
+
+      #loginSection {
+        padding: 24px 18px;
+        border-radius: 12px;
+        margin: 16px auto;
+      }
+
+      input {
+        padding: 10px 12px;
+        font-size: 0.9rem;
+        border-radius: 8px;
+      }
+
+      button {
+        padding: 10px 16px;
+        font-size: 0.9rem;
+        border-radius: 8px;
+      }
+
+      /* Card-style stacked rows for small screens */
+      table, thead, tbody, th, td, tr {
+        display: block;
+      }
+
+      thead { display: none; }
+
+      tbody tr {
+        background: rgba(255, 255, 255, 0.04);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 10px;
+        margin-bottom: 14px;
+        padding: 14px;
+      }
+
+      td {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        padding: 6px 0;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        font-size: 0.85rem;
+      }
+
+      td::before {
+        font-weight: 600;
+        color: #a78bfa;
+        margin-right: 10px;
+        white-space: nowrap;
+        text-transform: uppercase;
+        font-size: 0.75rem;
+        letter-spacing: 0.5px;
+        min-width: 70px;
+      }
+
+      /* Contact table labels */
+      #contactTable td:nth-child(1)::before { content: "Name"; }
+      #contactTable td:nth-child(2)::before { content: "Email"; }
+      #contactTable td:nth-child(3)::before { content: "Phone"; }
+      #contactTable td:nth-child(4)::before { content: "Message"; }
+      #contactTable td:nth-child(5)::before { content: "Date"; }
+
+      /* Career table labels */
+      #careerTable td:nth-child(1)::before { content: "Name"; }
+      #careerTable td:nth-child(2)::before { content: "Email"; }
+      #careerTable td:nth-child(3)::before { content: "Phone"; }
+      #careerTable td:nth-child(4)::before { content: "Resume"; }
+      #careerTable td:nth-child(5)::before { content: "Date"; }
+
+      td:last-child { border-bottom: none; }
+    }
   </style>
 </head>
 <body>
